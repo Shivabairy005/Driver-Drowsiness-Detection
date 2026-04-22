@@ -6,3 +6,14 @@ env/
 drowsiness_env/
 .DS_Store
 drowsiness_log.csv
+
+# Ignore reports
+Project_Report.md
+Project_Report.pdf
+Technical_Report.md
+Technical_Report.pdf
+
+# Ignore images
+*.jpeg
+*.jpg
+*.png
