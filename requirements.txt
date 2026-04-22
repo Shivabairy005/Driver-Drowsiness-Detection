@@ -1,0 +1,9 @@
+# Drowsiness Detection System - Dependencies
+# Install: pip install -r requirements.txt
+
+opencv-python==4.9.0.80
+numpy==1.26.4
+scipy==1.12.0
+
+# Raspberry Pi only (uncomment on Pi):
+# RPi.GPIO==0.7.1

@@ -1,0 +1,138 @@
+{
+    "_comment": "Drowsiness Detection System - Configuration File",
+    "_version": "1.0.0",
+    "_description": "All tunable parameters for the drowsiness detector. Modify values below to adapt to your setup.",
+
+    "ear_threshold": {
+        "value": 0.22,
+        "description": "Eye Aspect Ratio threshold below which eyes are considered closed",
+        "range": "0.15 - 0.30",
+        "notes": "Lower for people with naturally narrow eyes, higher for wide-open eyes"
+    },
+
+    "ear_consec_frames": {
+        "value": 2,
+        "description": "Minimum consecutive frames with EAR below threshold to count as a blink",
+        "range": "1 - 5",
+        "notes": "Higher values reduce false positives but may miss fast blinks"
+    },
+
+    "degradation_weight": {
+        "value": 0.60,
+        "description": "Weight given to Blink Quality Degradation Index (vs EAR-based score)",
+        "range": "0.0 - 1.0",
+        "notes": "EAR weight = 1.0 - degradation_weight. Default: 40% EAR + 60% degradation"
+    },
+
+    "calibration_blinks": {
+        "value": 5,
+        "description": "Number of initial blinks required for calibration",
+        "range": "3 - 10",
+        "notes": "More blinks = more accurate baseline, but longer calibration time"
+    },
+
+    "calibration_timeout_sec": {
+        "value": 30,
+        "description": "Maximum seconds to wait for calibration before proceeding with defaults",
+        "range": "10 - 60",
+        "notes": "After timeout, system uses default baseline blink speed"
+    },
+
+    "blink_history_size": {
+        "value": 5,
+        "description": "Number of recent blinks to average for degradation calculation",
+        "range": "3 - 15",
+        "notes": "Larger window = smoother but slower response to changes"
+    },
+
+    "drowsiness_thresholds": {
+        "warning": 0.35,
+        "critical": 0.65,
+        "description": "Drowsiness score thresholds for warning (yellow) and critical (red) alerts",
+        "notes": "Values are 0.0 (fully alert) to 1.0 (fully drowsy)"
+    },
+
+    "alert_cooldown_sec": {
+        "value": 3.0,
+        "description": "Minimum seconds between consecutive buzzer alerts",
+        "range": "1.0 - 10.0",
+        "notes": "Prevents annoying rapid buzzer triggering"
+    },
+
+    "gpio_pins": {
+        "buzzer": 17,
+        "red_led": 27,
+        "green_led": 22,
+        "description": "BCM GPIO pin numbers for hardware outputs",
+        "notes": "Change only if your wiring differs from the default schematic"
+    },
+
+    "camera": {
+        "resolution_width": 640,
+        "resolution_height": 480,
+        "fps_target": 30,
+        "camera_index": 0,
+        "description": "Camera capture settings",
+        "notes": "Lower resolution for better performance on Pi. Index 0 = default camera."
+    },
+
+    "display": {
+        "show_video": true,
+        "show_fps": true,
+        "show_metrics": true,
+        "show_face_rect": true,
+        "show_eye_rect": true,
+        "window_name": "Drowsiness Detector",
+        "description": "UI display options",
+        "notes": "Set show_video to false for headless operation (Pi without monitor)"
+    },
+
+    "logging": {
+        "enabled": true,
+        "max_events": 10000,
+        "log_file": "drowsiness_log.csv",
+        "console_debug": false,
+        "description": "Event logging settings",
+        "notes": "Circular buffer keeps last max_events entries. Set console_debug for verbose output."
+    },
+
+    "performance": {
+        "frame_scale": 1.0,
+        "haar_scale_factor": 1.3,
+        "haar_min_neighbors": 5,
+        "haar_min_face_size": [80, 80],
+        "description": "Performance tuning for detection",
+        "notes": "Reduce frame_scale on Pi for speed. Increase min_face_size to skip small/distant faces."
+    },
+
+    "mock_mode": {
+        "enabled": false,
+        "description": "Enable mock mode for testing without a webcam",
+        "notes": "Generates synthetic frames with simulated blink patterns"
+    },
+
+    "scenarios": {
+        "_description": "Example configurations for different scenarios",
+        "raspberry_pi": {
+            "camera.resolution_width": 320,
+            "camera.resolution_height": 240,
+            "camera.fps_target": 15,
+            "performance.frame_scale": 0.75,
+            "performance.haar_min_face_size": [60, 60],
+            "display.show_video": false
+        },
+        "laptop_development": {
+            "camera.resolution_width": 640,
+            "camera.resolution_height": 480,
+            "camera.fps_target": 30,
+            "performance.frame_scale": 1.0,
+            "logging.console_debug": true
+        },
+        "high_accuracy": {
+            "ear_threshold.value": 0.20,
+            "calibration_blinks.value": 8,
+            "blink_history_size.value": 10,
+            "ear_consec_frames.value": 3
+        }
+    }
+}
